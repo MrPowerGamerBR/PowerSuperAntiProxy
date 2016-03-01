@@ -1,5 +1,5 @@
 #
-# PowerAntiProxy - Bloqueie Proxies + Bot Attacks!
+# PowerSuperAntiProxy - Bloqueie Proxies + Bot Attacks!
 #
 # Criado por MrPowerGamerBR
 #
@@ -10,6 +10,7 @@ BuscarDeSites: true
 MensagemDeKick: "§cUso de Proxy!\n\n§cDesative o Proxy antes de conectar!"
 UsarProtocolLib: true
 BloquearIPsDoDeathBot: true
+UsarASkidban: true
 SitesBuscados:
     # PowerHateList (Créditos: MrPowerGamerBR (mrpowergamerbr.com), nathampa0909 (jairocraft.com.br))
     - "http://plugins.mrpowergamerbr.com/files/hate.txt"
@@ -29,7 +30,6 @@ HostnamesBloqueados:
     - "exitpoint"
 BloquearIPsDaOVH: true
 UsarStopForumSpam: true
-UsarShroomery: true
 
 #
 # Temmie Updater - Verificador de Atualizações
@@ -38,3 +38,4 @@ UsarShroomery: true
 #
 TemmieUpdater:
     VerificarUpdates: true
+    TemmieMetrics: true
