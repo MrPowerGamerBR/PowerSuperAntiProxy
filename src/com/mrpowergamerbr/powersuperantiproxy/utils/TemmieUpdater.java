@@ -16,49 +16,49 @@ public class TemmieUpdater implements Listener {
 	/*
 	 * TemmieUpdater - Fancy Updater
 	 * 
-	 *                    +MMMMMMMM:                                  NMMM/                                
-	 *                   +MMMMMMMMNN+          yNNNNNNNN        :NNNNMMMM/                                
-	 *                   +MMMN..NMMMNmo      hmNMMMh....      +mNMMMMMMMM/                                
-	 *                 odmMMMN  --dMMMNdy  ddMMMMMMy        odmMMMMMM:-mM/                                
-	 *                 yMMMd::    hMMMMMNhhMMMMMMMMNhhhhhhhhNMMMMMN::  dM/                                
-	 *                 yMMMNyyyyyyNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNyy  dM/                                
-	 *               +smMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMssNMhs:                              
-	 *             +omMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMdo/                            
-	 *             NMMMMMMMMMMMMMMMMMMMMNsyMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMh                            
-	 *             NMMMMMMMMMMMMMMMMMMmyo  yyNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMm/:                          
-	 *           ::MMMMMMMMMMMMMMMMMmh+      yhNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMN                          
-	 *          .MMMMMMMMMMMMMMMMMmm/          smNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMN                          
-	 *         `-MMMMMMMMMMMMMMMNN-              oNNMMMMMMMMMMMMMMMMMMMMMMMMMMMN                          
-	 *        :MMMMMMMMMMMMMMMMM`                  /MMMMMMMMMMMMMMMMMMMMMMMMMMMN                          
-	 *        :MMMMMMMMMMMMMMN                            mMMMMMMMMMMMMMMMMMMMMMMM`                       
-	 *    yNNNMMMMMMMMMMMMMh``  mNNN+                     mMMMMMMMMMMMMMMMMMMMMMMM`                       
-	 *  hm/.../MMMMMMMMMMMMh    NMMM+              :mmmm  mMMMMMMMMMMMMMMMMMMMMMMM`     /mmmmmm.          
-	 *dd:-`   :MMMMMMMMo---.    NMMM+              /MMMM  .-hMMMMMMMM--mMMMMMMMMMMdddddds------hddd/      
-	 *MM.     :MMMMMM+:sh+      ::::.      hh`     /MMMM    yMMMMMMMM` dMMMMMMMN::::::::.      -:::oho    
-	 *MM.     `/+MM//symMs                 //`     .////    yMMMMMMMM` dMMMMMMMN                   oMy    
-	 *MM.       `++ssNMMMs        +s:              -so      yMMMMMMMM` dMMMMMm+/                   oMy    
-	 *MM.          NMMMMMdo/      hM+      oo`     /Mm      yMMMMMMMM` dMMMdo/                     oMy    
-	 *MMo+.        NMMMMMMMh      +so++++++ss++++++oso      yMMMMMMMM` dMMMs                   /+++os/    
-	 *yyyy+/-      NMMMMMMMm//      /yyyyyy  syyyyy+        yMMMMMMMM` dMMMs                   mMMMy///:  
-	 *    oho::::::MMMMMMMMMMN                              yMMMMMMhh::mMMMh:-          .::::::yhhhhhhhy::
-	 *      /ddddddMMMMMMMMMMN----`                         yMMMMMm  NMMMMMMMd----------oMNdddd`       .MM
-	 *             NMMMMMMMMMMMMMM/.`                   ....hMMMMMm  NMMMMMMMMMMMMmmmmNMNmh          `.:mm
-	 *             NMMMMMMMMMMMMMMMM+```````````````````MMMMMMMMMMm``NNMMMMMNNNNNN.```sNs           `/Nd  
-	 *             NMMMMMMMMMMMMMMs/hMMMMMMMMMMMMMMMMMMM////dMMMMMMMM-.dMMMs      NMMM+            oMy    
-	 *             NMMMMMMMMMMMMMMMMy+++++++++++++++++++MMMMMMMMMMMMM-.dMMMs                   mMMMo      
-	 *             ``dMMMMMd````NMs+hNNNNNNNNNNNNNNNNNNN++++dMMMMMMMM-.--hMs                `NN-````      
-	 *               dMMMMMh    NM+-/ooooooooooooooooooo----hMMMMMMMM-...yMs                `MM.          
-	 *               --hMy-- `ddMM/.--------------------....:/yMMMMMM-...yMs                 -:hh-        
-	 *                 -/-   `MMo+-.....:hh...............::::+shMN++....yMs                   mM:        
-	 *                       `MM/:::::::+MM:::::::::::::yy+/////+o+....symMs      ss.          mM:        
-	 *                       `MM+///////oMMhhhho////////MMo////:-......dMyo:      NM:          mM:        
-	 *                       `MMhyyyyyyyhMMssNMs////////MMhyyy+......osss-   .++++NM:          mM:        
-	 *                       `MMyyyyyyyyhMN  mMhyyyyyyyyMMMMMMhooooooMMo/////+yyyyMM:        //sy-        
-	 *                       `MM`       -MN  mMdhhhhhhhhhhNMdhhhhhhMMhhhhhhmMh    NM:       `MM.          
-	 *                       `MM`       -MN  mM:          mM/     .MM`     +Mh  --hd-       `MM.          
-	 *                       `mm-.`   `.:md  mM:        ..hm:   `.-mm    `.+my.-mm`        .-mm.          
-	 *                          mN:```+Nh    dN/````````NN.     :Mm``````sNo -Nm``````````:Nm             
-	 *                            hMMMy        hMMMMMMMM        :MMMMMMMM/     `MMMMMMMMMMd               
+	 *                     +MMMMMMMM:                                  NMMM/                                
+	 *                    +MMMMMMMMNN+          yNNNNNNNN        :NNNNMMMM/                                
+	 *                    +MMMN..NMMMNmo      hmNMMMh....      +mNMMMMMMMM/                                
+	 *                  odmMMMN  --dMMMNdy  ddMMMMMMy        odmMMMMMM:-mM/                                
+	 *                  yMMMd::    hMMMMMNhhMMMMMMMMNhhhhhhhhNMMMMMN::  dM/                                
+	 *                  yMMMNyyyyyyNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNyy  dM/                                
+	 *                +smMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMssNMhs:                              
+	 *              +omMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMdo/                            
+	 *              NMMMMMMMMMMMMMMMMMMMMNsyMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMh                            
+	 *              NMMMMMMMMMMMMMMMMMMmyo  yyNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMm/:                          
+	 *            ::MMMMMMMMMMMMMMMMMmh+      yhNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMN                          
+	 *           .MMMMMMMMMMMMMMMMMmm/          smNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMN                          
+	 *          `-MMMMMMMMMMMMMMMNN-              oNNMMMMMMMMMMMMMMMMMMMMMMMMMMMN                          
+	 *         :MMMMMMMMMMMMMMMMM`                  /MMMMMMMMMMMMMMMMMMMMMMMMMMMN                          
+	 *         :MMMMMMMMMMMMMMN                            mMMMMMMMMMMMMMMMMMMMMMMM`                       
+	 *     yNNNMMMMMMMMMMMMMh``  mNNN+                     mMMMMMMMMMMMMMMMMMMMMMMM`                       
+	 *   hm/.../MMMMMMMMMMMMh    NMMM+              :mmmm  mMMMMMMMMMMMMMMMMMMMMMMM`     /mmmmmm.          
+	 * dd:-`   :MMMMMMMMo---.    NMMM+              /MMMM  .-hMMMMMMMM--mMMMMMMMMMMdddddds------hddd/      
+	 * MM.     :MMMMMM+:sh+      ::::.      hh`     /MMMM    yMMMMMMMM` dMMMMMMMN::::::::.      -:::oho    
+	 * MM.     `/+MM//symMs                 //`     .////    yMMMMMMMM` dMMMMMMMN                   oMy    
+	 * MM.       `++ssNMMMs        +s:              -so      yMMMMMMMM` dMMMMMm+/                   oMy    
+	 * MM.          NMMMMMdo/      hM+      oo`     /Mm      yMMMMMMMM` dMMMdo/                     oMy    
+	 * MMo+.        NMMMMMMMh      +so++++++ss++++++oso      yMMMMMMMM` dMMMs                   /+++os/    
+	 * yyyy+/-      NMMMMMMMm//      /yyyyyy  syyyyy+        yMMMMMMMM` dMMMs                   mMMMy///:  
+	 *     oho::::::MMMMMMMMMMN                              yMMMMMMhh::mMMMh:-          .::::::yhhhhhhhy::
+	 *       /ddddddMMMMMMMMMMN----`                         yMMMMMm  NMMMMMMMd----------oMNdddd`       .MM
+	 *              NMMMMMMMMMMMMMM/.`                   ....hMMMMMm  NMMMMMMMMMMMMmmmmNMNmh          `.:mm
+	 *              NMMMMMMMMMMMMMMMM+```````````````````MMMMMMMMMMm``NNMMMMMNNNNNN.```sNs           `/Nd  
+	 *              NMMMMMMMMMMMMMMs/hMMMMMMMMMMMMMMMMMMM////dMMMMMMMM-.dMMMs      NMMM+            oMy    
+	 *              NMMMMMMMMMMMMMMMMy+++++++++++++++++++MMMMMMMMMMMMM-.dMMMs                   mMMMo      
+	 *              ``dMMMMMd````NMs+hNNNNNNNNNNNNNNNNNNN++++dMMMMMMMM-.--hMs                `NN-````      
+	 *                dMMMMMh    NM+-/ooooooooooooooooooo----hMMMMMMMM-...yMs                `MM.          
+	 *                --hMy-- `ddMM/.--------------------....:/yMMMMMM-...yMs                 -:hh-        
+	 *                  -/-   `MMo+-.....:hh...............::::+shMN++....yMs                   mM:        
+	 *                        `MM/:::::::+MM:::::::::::::yy+/////+o+....symMs      ss.          mM:        
+	 *                        `MM+///////oMMhhhho////////MMo////:-......dMyo:      NM:          mM:        
+	 *                        `MMhyyyyyyyhMMssNMs////////MMhyyy+......osss-   .++++NM:          mM:        
+	 *                        `MMyyyyyyyyhMN  mMhyyyyyyyyMMMMMMhooooooMMo/////+yyyyMM:        //sy-        
+	 *                        `MM`       -MN  mMdhhhhhhhhhhNMdhhhhhhMMhhhhhhmMh    NM:       `MM.          
+	 *                        `MM`       -MN  mM:          mM/     .MM`     +Mh  --hd-       `MM.          
+	 *                        `mm-.`   `.:md  mM:        ..hm:   `.-mm    `.+my.-mm`        .-mm.          
+	 *                           mN:```+Nh    dN/````````NN.     :Mm``````sNo -Nm``````````:Nm             
+	 *                             hMMMy        hMMMMMMMM        :MMMMMMMM/     `MMMMMMMMMMd               
 	 * "hOI!"
 	 * 
 	 * Created by MrPowerGamerBR 2016
