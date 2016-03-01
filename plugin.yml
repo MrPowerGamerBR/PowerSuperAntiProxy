@@ -1,5 +1,5 @@
 name: PowerSuperAntiProxy
-main: com.mrpowergamerbr.powersuperantiproxy.PowerAntiProxy
+main: com.mrpowergamerbr.powersuperantiproxy.PowerSuperAntiProxy
 version: 1.0.0
 softdepend: [ProtocolLib]
 commands:

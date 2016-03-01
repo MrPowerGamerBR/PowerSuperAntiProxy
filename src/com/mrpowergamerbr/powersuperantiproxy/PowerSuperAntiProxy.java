@@ -43,7 +43,7 @@ public class PowerSuperAntiProxy extends JavaPlugin implements Listener {
 	public AsrielConfig asriel;
 
 	public static final String pluginName = "PowerSuperAntiProxy";
-	
+
 	public static final String pluginVersion = "v1.0.0";
 
 	@Override
@@ -56,7 +56,7 @@ public class PowerSuperAntiProxy extends JavaPlugin implements Listener {
 		proxyUse = asriel.getChanged("MensagemDeKick");
 
 		new PowerCommandUtils(this, "powerantiproxy");
-		
+
 		/*
 		 * IPs em formato CIDR do ASkidban
 		 */
@@ -162,12 +162,15 @@ public class PowerSuperAntiProxy extends JavaPlugin implements Listener {
 			} catch (Exception e) {
 			}
 
-			try(BufferedReader br = new BufferedReader(new FileReader(new File(getDataFolder(), "blockthis.txt")))) {
-				for(String line; (line = br.readLine()) != null; ) {
-					proxyIPs.add(line);
+			File blockThis = new File(getDataFolder(), "blockthis.txt");
+			if (blockThis.exists()) {
+				try(BufferedReader br = new BufferedReader(new FileReader(blockThis))) {
+					for(String line; (line = br.readLine()) != null; ) {
+						proxyIPs.add(line);
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
 		}
 
@@ -209,7 +212,7 @@ public class PowerSuperAntiProxy extends JavaPlugin implements Listener {
 				});
 			}
 		}
-		
+
 		if ((boolean) asriel.get("TemmieUpdater.VerificarUpdates")) {
 			new TemmieUpdater(this);
 		}
