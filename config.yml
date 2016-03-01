@@ -1,0 +1,40 @@
+#
+# PowerAntiProxy - Bloqueie Proxies + Bot Attacks!
+#
+# Criado por MrPowerGamerBR
+#
+# Website: http://mrpowergamerbr.com/
+# SparklyPower: http://sparklypower.net/
+#
+BuscarDeSites: true
+MensagemDeKick: "§cUso de Proxy!\n\n§cDesative o Proxy antes de conectar!"
+UsarProtocolLib: true
+BloquearIPsDoDeathBot: true
+SitesBuscados:
+    # PowerHateList (Créditos: MrPowerGamerBR (mrpowergamerbr.com), nathampa0909 (jairocraft.com.br))
+    - "http://plugins.mrpowergamerbr.com/files/hate.txt"
+BloquearHostnamesFeios: true
+HostnamesBloqueados:
+    # HotspotShield
+    - "anchorfree"
+    # IP Redator
+    - "ipredator.se"
+    # PixelFucker
+    - "pixelfucker.org"
+    # TheRemailer
+    - "theremailer.net"
+    # Tor Exit
+    - "tor-exit"
+    - "torexit"
+    - "exitpoint"
+BloquearIPsDaOVH: true
+UsarStopForumSpam: true
+UsarShroomery: true
+
+#
+# Temmie Updater - Verificador de Atualizações
+#
+# Criado por MrPowerGamerBR
+#
+TemmieUpdater:
+    VerificarUpdates: true
