@@ -44,10 +44,12 @@ public class PowerSuperAntiProxy extends JavaPlugin implements Listener {
 
 	public static final String pluginName = "PowerSuperAntiProxy";
 
-	public static final String pluginVersion = "v1.0.0";
+	public static final String pluginVersion = "v1.0.1";
 
 	@Override
 	public void onEnable() {
+		saveDefaultConfig();
+		
 		/*
 		 * Iniciar o AsrielConfig
 		 */
