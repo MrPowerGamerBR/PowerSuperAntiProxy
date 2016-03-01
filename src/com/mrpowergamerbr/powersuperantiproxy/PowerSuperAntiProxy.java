@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Scanner;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -24,146 +25,194 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
+import com.mrpowergamerbr.powersuperantiproxy.utils.AsrielConfig;
+import com.mrpowergamerbr.powersuperantiproxy.utils.PowerCommandUtils;
+import com.mrpowergamerbr.powersuperantiproxy.utils.TemmieUpdater;
 
 public class PowerSuperAntiProxy extends JavaPlugin implements Listener {
 	ArrayList<String> safeIPs = new ArrayList<String>();
 	ArrayList<String> proxyIPs = new ArrayList<String>();
 
-	final String proxyUse = "§cUso de Proxy!\n\n§cDesative o Proxy antes de conectar!";
-	
+	String proxyUse = "§cUso de Proxy!\n\n§cDesative o Proxy antes de conectar!";
+
 	ArrayList<String> deathBotIPs = new ArrayList<String>();
 	ArrayList<String> powerHateListIPs = new ArrayList<String>();
-	
+
 	static ArrayList<String> cidr = new ArrayList<String>();
+
+	public AsrielConfig asriel;
+
+	public static final String pluginName = "PowerSuperAntiProxy";
+	
+	public static final String pluginVersion = "v1.0.0";
 
 	@Override
 	public void onEnable() {
+		/*
+		 * Iniciar o AsrielConfig
+		 */
+		asriel = new AsrielConfig(this);
+
+		proxyUse = asriel.getChanged("MensagemDeKick");
+
+		new PowerCommandUtils(this, "powerantiproxy");
+		
+		/*
+		 * IPs em formato CIDR do ASkidban
+		 */
+		if ((boolean) asriel.get("UsarASkidban")) {
+			Thread t = new Thread(new Runnable() {
+				public void run() {
+					System.out.println("[" + pluginName + "] Pegando os IPs CIDR...");
+
+					try {
+						Scanner ipChecker = new Scanner((new URL("https://raw.githubusercontent.com/pisto/ASkidban/master/compiled/ipv4")).openStream());
+						while (ipChecker.hasNextLine()) {
+							String line = ipChecker.nextLine();
+							cidr.add(line);
+						}
+						System.out.println("[" + pluginName + "] IPs em formato CIDR foram pegos! Yay!");
+						ipChecker.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						System.out.println("[" + pluginName + "] Um erro ocorreu ao tentar pegar os IPs em formado CIDR!");
+						return;
+					}
+				}
+			});
+			t.start();
+		}
+
+
 		Scanner ipChecker;
 		/*
 		 * PowerHateList
 		 * HAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATEEEEEEEEEEEEEEEEEEEEEEEEE
 		 */
-		Thread t = new Thread(new Runnable() {
-			public void run() {
-				System.out.println("CIDRs IPs...");
 
-				try(BufferedReader br = new BufferedReader(new FileReader(getDataFolder() + "/scriptkiddies.txt"))) {
-					for(String line; (line = br.readLine()) != null; ) {
-						// process the line.
-						cidr.add(line);
+		if ((boolean) asriel.get("BuscarDeSites")) {
+			ArrayList<String> websitesToFind = (ArrayList<String>) asriel.get("SitesBuscados");
+
+			for (String web : websitesToFind) {
+				int ipsLoaded = 0;
+				try {
+					ipChecker = new Scanner((new URL(web)).openStream());
+
+
+					while (ipChecker.hasNextLine()) {
+						String line = ipChecker.nextLine();
+						if (line.contains("HATE") || line.equals("")) {
+							continue;
+						}
+						ipsLoaded++;
+						powerHateListIPs.add(line);
 					}
-					// line is not visible here.
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				System.out.println("Finished gathering CIDR IP!");
-			}
-		});
-		t.start();
+					// System.out.println("HATE. " + powerHateListIPs.toString());
+					ipChecker.close();
 
-		try {
-			ipChecker = new Scanner((new URL("http://158.69.120.5/hate.txt")).openStream());
-			System.out.println("HATE. LET ME TELL YOU HOW MUCH I'VE COME TO HATE YOU SINCE I BEGAN TO LIVE.");
-			while (ipChecker.hasNextLine()) {
-				String line = ipChecker.nextLine();
-				if (line.contains("HATE") || line.equals("")) {
+					Bukkit.getLogger().log(Level.INFO, "[" + pluginName + "] IPs carregados do site " + web + " - " + ipsLoaded);
+				} catch (Exception e) {
+					Bukkit.getLogger().log(Level.INFO, "[" + pluginName + "] Um problema ocorreu ao tentar carregar os IPs do site: " + web);
 					continue;
 				}
-				powerHateListIPs.add(line);
 			}
-			// System.out.println("HATE. " + powerHateListIPs.toString());
-			ipChecker.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		/*
-		 * HTTP Proxy
-		 */
-		try {
-			ipChecker = new Scanner((new URL("http://pastebin.com/raw.php?i=H9v1wFJB")).openStream());
-			while (ipChecker.hasNextLine()) {
-				String line = ipChecker.nextLine();
-				String[] split = line.split("\\:");
-				deathBotIPs.add(split[0]);
-			}
-			ipChecker.close();
-		} catch (Exception e) {
 		}
 
-		/*
-		 * SOCKS5 Proxy
-		 */
-		try {
-			ipChecker = new Scanner((new URL("http://pastebin.com/raw.php?i=83uAYrLT")).openStream());
-			while (ipChecker.hasNextLine()) {
-				String line = ipChecker.nextLine();
-				String[] split = line.split("\\:");
-				deathBotIPs.add(split[0]);
+		if ((boolean) asriel.get("BloquearIPsDoDeathBot")) {
+			/*
+			 * HTTP Proxy
+			 */
+			try {
+				ipChecker = new Scanner((new URL("http://pastebin.com/raw.php?i=H9v1wFJB")).openStream());
+				while (ipChecker.hasNextLine()) {
+					String line = ipChecker.nextLine();
+					String[] split = line.split("\\:");
+					deathBotIPs.add(split[0]);
+				}
+				ipChecker.close();
+			} catch (Exception e) {
 			}
-			ipChecker.close();
-		} catch (Exception e) {
-		}
 
-		/*
-		 * SOCKS4 Proxy
-		 */
-		try {
-			ipChecker = new Scanner((new URL("http://pastebin.com/raw.php?i=H8RJWN6f")).openStream());
-			while (ipChecker.hasNextLine()) {
-				String line = ipChecker.nextLine();
-				String[] split = line.split("\\:");
-				deathBotIPs.add(split[0]);
+			/*
+			 * SOCKS5 Proxy
+			 */
+			try {
+				ipChecker = new Scanner((new URL("http://pastebin.com/raw.php?i=83uAYrLT")).openStream());
+				while (ipChecker.hasNextLine()) {
+					String line = ipChecker.nextLine();
+					String[] split = line.split("\\:");
+					deathBotIPs.add(split[0]);
+				}
+				ipChecker.close();
+			} catch (Exception e) {
 			}
-			ipChecker.close();
-		} catch (Exception e) {
-		}
 
-		try(BufferedReader br = new BufferedReader(new FileReader(new File(getDataFolder(), "blockthis.txt")))) {
-			for(String line; (line = br.readLine()) != null; ) {
-				// process the line.
-				proxyIPs.add(line);
+			/*
+			 * SOCKS4 Proxy
+			 */
+			try {
+				ipChecker = new Scanner((new URL("http://pastebin.com/raw.php?i=H8RJWN6f")).openStream());
+				while (ipChecker.hasNextLine()) {
+					String line = ipChecker.nextLine();
+					String[] split = line.split("\\:");
+					deathBotIPs.add(split[0]);
+				}
+				ipChecker.close();
+			} catch (Exception e) {
 			}
-			// line is not visible here.
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+			try(BufferedReader br = new BufferedReader(new FileReader(new File(getDataFolder(), "blockthis.txt")))) {
+				for(String line; (line = br.readLine()) != null; ) {
+					proxyIPs.add(line);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 
 		Bukkit.getPluginManager().registerEvents(this, this);
 
-		ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(this, new PacketType[] { PacketType.Handshake.Client.SET_PROTOCOL, PacketType.Login.Client.START }) {
-			public void onPacketReceiving(final PacketEvent event) {
-				InetAddress inet = event.getPlayer().getAddress().getAddress();
-				
-				if (safeIPs.contains(inet.getHostAddress())) {
-					return;
-				}
+		if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
+			if ((boolean) asriel.get("UsarProtocolLib")) {
+				ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(this, new PacketType[] { PacketType.Handshake.Client.SET_PROTOCOL, PacketType.Login.Client.START }) {
+					public void onPacketReceiving(final PacketEvent event) {
+						InetAddress inet = event.getPlayer().getAddress().getAddress();
 
-				if (proxyIPs.contains(inet.getHostAddress())) {
-					event.setCancelled(true);
-					return;
-				}
+						if (safeIPs.contains(inet.getHostAddress())) {
+							return;
+						}
 
-				if (deathBotIPs.contains(inet.getHostAddress())) {
-					event.setCancelled(true);
+						if (proxyIPs.contains(inet.getHostAddress())) {
+							event.setCancelled(true);
+							return;
+						}
 
-					proxyIPs.add(inet.getHostAddress());
+						if (deathBotIPs.contains(inet.getHostAddress())) {
+							event.setCancelled(true);
 
-					logToFile("[" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR) + " " + Calendar.getInstance().get(Calendar.HOUR) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + "] " + inet.getHostAddress() + ": ProtocolPwned! (DeathBot IPs)");
-					return;
-				}
+							proxyIPs.add(inet.getHostAddress());
 
-				if (powerHateListIPs.contains(inet.getHostAddress())) {
-					event.setCancelled(true);
+							logToFile("[" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR) + " " + Calendar.getInstance().get(Calendar.HOUR) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + "] " + inet.getHostAddress() + ": Bloqueado em Protocol Level! (DeathBot IPs)");
+							return;
+						}
 
-					proxyIPs.add(inet.getHostAddress());
+						if (powerHateListIPs.contains(inet.getHostAddress())) {
+							event.setCancelled(true);
 
-					logToFile("[" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR) + " " + Calendar.getInstance().get(Calendar.HOUR) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + "] " + inet.getHostAddress() + ": ProtocolPwned! (HateList IPs)");
-					return;
-				}
+							proxyIPs.add(inet.getHostAddress());
+
+							logToFile("[" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR) + " " + Calendar.getInstance().get(Calendar.HOUR) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + "] " + inet.getHostAddress() + ": Bloqueado em Protocol Level! (HateList IPs)");
+							return;
+						}
+					}
+				});
 			}
-		});
+		}
+		
+		if ((boolean) asriel.get("TemmieUpdater.VerificarUpdates")) {
+			new TemmieUpdater(this);
+		}
 	}
 
 	@Override
@@ -183,26 +232,26 @@ public class PowerSuperAntiProxy extends JavaPlugin implements Listener {
 			// logToFile("[" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR) + " " + Calendar.getInstance().get(Calendar.HOUR) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + "] " + apple.getAddress().getHostName() + "///" + apple.getAddress().getHostAddress() + " (" + apple.getName() + ") " + ": Proxy do DeathBot!");
 			return;
 		}
-		
+
 		if (deathBotIPs.contains(inet.getHostAddress())) {
 			apple.disallow(Result.KICK_OTHER, proxyUse);
 			proxyIPs.add(inet.getHostAddress());
 			logToFile("[" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR) + " " + Calendar.getInstance().get(Calendar.HOUR) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + "] " + apple.getAddress().getHostName() + "///" + apple.getAddress().getHostAddress() + " (" + apple.getName() + ") " + ": Proxy do DeathBot!");
 			return;
 		}
-		
+
 		if (powerHateListIPs.contains(inet.getHostAddress())) {
 			proxyIPs.add(inet.getHostAddress());
 			apple.disallow(Result.KICK_OTHER, proxyUse);
 			logToFile("[" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR) + " " + Calendar.getInstance().get(Calendar.HOUR) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + "] " + apple.getAddress().getHostName() + "///" + apple.getAddress().getHostAddress() + " (" + apple.getName() + ") " + ": Proxy no hate.txt!");
 			return;
 		}
-		
+
 		for (String s : cidr) {
 			String[] split = inet.getHostAddress().split("\\.");
 			if (s.startsWith(split[0] + ".")) {
 				String[] addresses = new SubnetUtils(s).getInfo().getAllAddresses();
-				
+
 				if (Arrays.asList(addresses).contains(s)) {
 					apple.disallow(Result.KICK_OTHER, proxyUse);
 					logToFile("[" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR) + " " + Calendar.getInstance().get(Calendar.HOUR) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + "] " + apple.getAddress().getHostName() + "///" + apple.getAddress().getHostAddress() + " (" + apple.getName() + ") " + ": Proxy ScriptKiddie!");
@@ -244,94 +293,39 @@ public class PowerSuperAntiProxy extends JavaPlugin implements Listener {
 		}
 
 		/*
-		 * Hotspot Shield
+		 * Bloquear Hostnames Feios
 		 */
-		if (inet.getHostName().toLowerCase().contains("anchorfree")) {
-			apple.disallow(Result.KICK_OTHER, proxyUse);
-			proxyIPs.add(inet.getHostAddress());
-			logToFile("[" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR) + " " + Calendar.getInstance().get(Calendar.HOUR) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + "] " + apple.getAddress().getHostName() + "///" + apple.getAddress().getHostAddress() + " (" + apple.getName() + ") " + ": Proxy utilizando o HotspotShield!");
-			writeIPs(inet.getHostAddress());
-			return;
+		if ((boolean) asriel.get("BloquearHostnamesFeios")) {
+			ArrayList<String> hostnames = (ArrayList<String>) asriel.get("HostnamesBloqueados");
+			for (String hostname : hostnames) {
+				if (inet.getHostName().toLowerCase().contains("hostname")) {
+					apple.disallow(Result.KICK_OTHER, proxyUse);
+					logToFile("[" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR) + " " + Calendar.getInstance().get(Calendar.HOUR) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + "] " + apple.getAddress().getHostName() + "///" + apple.getAddress().getHostAddress() + " (" + apple.getName() + ") " + ": IP contém " + hostname + "!");
+					proxyIPs.add(inet.getHostAddress());
+					return;
+				}
+			}
 		}
 
 		/*
-		 * IP Redator
+		 * Bloquear IPs da OVH
 		 */
-		if (inet.getHostName().toLowerCase().contains("ipredator.se")) {
+		if ((boolean) asriel.get("BloquearIPsDaOVH") && inet.getHostName().toLowerCase().matches(".*ns[0-9]+.*")) {
 			apple.disallow(Result.KICK_OTHER, proxyUse);
-			proxyIPs.add(inet.getHostAddress());
-			logToFile("[" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR) + " " + Calendar.getInstance().get(Calendar.HOUR) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + "] " + apple.getAddress().getHostName() + "///" + apple.getAddress().getHostAddress() + " (" + apple.getName() + ") " + ": Proxy utilizando o IP Redator!");
-			writeIPs(inet.getHostAddress());
-			return;
-		}
-
-		/*
-		 * PixelFucker
-		 */
-		if (inet.getHostName().toLowerCase().contains("pixelfucker.org")) {
-			apple.disallow(Result.KICK_OTHER, proxyUse);
-			proxyIPs.add(inet.getHostAddress());
-			logToFile("[" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR) + " " + Calendar.getInstance().get(Calendar.HOUR) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + "] " + apple.getAddress().getHostName() + "///" + apple.getAddress().getHostAddress() + " (" + apple.getName() + ") " + ": Proxy utilizando o PixelFucker!");
-			writeIPs(inet.getHostAddress());
-			return;
-		}
-
-		/*
-		 * TheRemailer
-		 */
-		if (inet.getHostName().toLowerCase().contains("theremailer.net")) {
-			apple.disallow(Result.KICK_OTHER, proxyUse);
-			proxyIPs.add(inet.getHostAddress());
-			logToFile("[" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR) + " " + Calendar.getInstance().get(Calendar.HOUR) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + "] " + apple.getAddress().getHostName() + "///" + apple.getAddress().getHostAddress() + " (" + apple.getName() + ") " + ": Proxy utilizando o TheRemailer!");
-			writeIPs(inet.getHostAddress());
-			return;
-		}
-
-		/*
-		 * Tor Exit
-		 */
-		if (inet.getHostName().toLowerCase().contains("tor-exit") || inet.getHostName().toLowerCase().contains("torexit") || inet.getHostName().toLowerCase().contains("exitpoint")) {
-			apple.disallow(Result.KICK_OTHER, proxyUse);
-			proxyIPs.add(inet.getHostAddress());
-			logToFile("[" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR) + " " + Calendar.getInstance().get(Calendar.HOUR) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + "] " + apple.getAddress().getHostName() + "///" + apple.getAddress().getHostAddress() + " (" + apple.getName() + ") " + ": Proxy utilizando um Tor Exit Point!");
-			writeIPs(inet.getHostAddress());
-			return;
-		}
-
-		/*
-		 * OVH IPs
-		 */
-		if (inet.getHostName().toLowerCase().matches("ns[0-9]+")) {
-			apple.disallow(Result.KICK_OTHER, proxyUse);
-			proxyIPs.add(inet.getHostAddress());
 			logToFile("[" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR) + " " + Calendar.getInstance().get(Calendar.HOUR) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + "] " + apple.getAddress().getHostName() + "///" + apple.getAddress().getHostAddress() + " (" + apple.getName() + ") " + ": IP da OVH!");
-			writeIPs(inet.getHostAddress());
+			proxyIPs.add(inet.getHostAddress());
 			return;
 		}
 
-		// http://api.stopforumspam.org/api?ip=91.186.18.61
-		if (searchAndDestroy("http://api.stopforumspam.org/api?ip=" + inet.getHostAddress(), inet.getHostAddress(), "<appears>yes")) {
-			apple.disallow(Result.KICK_OTHER, proxyUse);
-			logToFile("[" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR) + " " + Calendar.getInstance().get(Calendar.HOUR) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + "] " + apple.getAddress().getHostName() + "///" + apple.getAddress().getHostAddress() + " (" + apple.getName() + ") " + ": Marcado como Proxy pelo StopForumSpam!");
-			writeIPs(inet.getHostAddress());
-			return;
+		if ((boolean) asriel.get("UsarStopForumSpam")) {
+			// http://api.stopforumspam.org/api?ip=91.186.18.61
+			if (searchAndDestroy("http://api.stopforumspam.org/api?ip=" + inet.getHostAddress(), inet.getHostAddress(), "<appears>yes")) {
+				apple.disallow(Result.KICK_OTHER, proxyUse);
+				logToFile("[" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR) + " " + Calendar.getInstance().get(Calendar.HOUR) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + "] " + apple.getAddress().getHostName() + "///" + apple.getAddress().getHostAddress() + " (" + apple.getName() + ") " + ": Marcado como Proxy pelo StopForumSpam!");
+				writeIPs(inet.getHostAddress());
+				return;
+			}
 		}
-
-		// http://www.shroomery.org/ythan/proxycheck.php?ip=177.138.98.29
-		/* if (searchAndDestroy("http://www.shroomery.org/ythan/proxycheck.php?ip=" + inet.getHostAddress(), inet.getHostAddress(), "Y")) {
-			apple.disallow(Result.KICK_OTHER, proxyUse);
-			logToFile("[" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR) + " " + Calendar.getInstance().get(Calendar.HOUR) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + "] " + apple.getAddress().getHostName() + "///" + apple.getAddress().getHostAddress() + " (" + apple.getName() + ") " + ": Marcado como Proxy pelo Shoomery!");
-			writeIPs(inet.getHostAddress());
-			return;
-		} */
-
-		// http://botscout.com/test/?ip=189.15.67.70
-		//if (searchAndDestroy("http://botscout.com/test/?ip=" + inet.getHostAddress() + "&key=Xf3a2W8O6lcs5ND", inet.getHostAddress(), "Y")) {
-		//	apple.disallow(Result.KICK_OTHER, proxyUse);
-		//	logToFile("[" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR) + " " + Calendar.getInstance().get(Calendar.HOUR) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + "] " + apple.getAddress().getHostName() + "///" + apple.getAddress().getHostAddress() + " (" + apple.getName() + ") " + ": Marcado como Proxy pelo BotScout!");
-		//	writeIPs(inet.getHostAddress());
-		//	return;
-		//}
 
 		safeIPs.add(inet.getHostAddress());
 	}
@@ -342,6 +336,9 @@ public class PowerSuperAntiProxy extends JavaPlugin implements Listener {
 
 	public boolean searchAndDestroy(String web, String ip, String search) {
 		if (ip.equals("127.0.0.1")) {
+			return false;
+		}
+		if (ip.startsWith("192.168")) {
 			return false;
 		}
 		if (proxyIPs.contains(ip)) {
