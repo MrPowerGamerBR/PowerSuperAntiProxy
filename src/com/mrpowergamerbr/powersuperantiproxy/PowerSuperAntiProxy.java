@@ -200,14 +200,14 @@ public class PowerSuperAntiProxy extends JavaPlugin implements Listener {
 							return;
 						}
 
-						if (powerHateListIPs.contains(inet.getHostAddress())) {
+						/* if (powerHateListIPs.contains(inet.getHostAddress())) {
 							event.setCancelled(true);
 
 							proxyIPs.add(inet.getHostAddress());
 
 							logToFile("[" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR) + " " + Calendar.getInstance().get(Calendar.HOUR) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + "] " + inet.getHostAddress() + ": Bloqueado em Protocol Level! (HateList IPs)");
 							return;
-						}
+						} */
 					}
 				});
 			}
