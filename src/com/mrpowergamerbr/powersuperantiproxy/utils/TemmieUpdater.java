@@ -78,9 +78,9 @@ public class TemmieUpdater implements Listener {
 				try {
 					Scanner ipChecker;
 					if ((boolean) m.asriel.get("TemmieUpdater.TemmieMetrics")) {
-						ipChecker = new Scanner((new URL("http://plugins.mrpowergamerbr.com/updater?plugin=" + PowerSuperAntiProxy.pluginName + "&port=" + Bukkit.getPort() + "&ver=" + getVersion() + "&plugins=" + getPlugins())).openStream());
+						ipChecker = new Scanner((new URL("http://mrpowergamerbr.com/plugins/updater?plugin=" + PowerSuperAntiProxy.pluginName + "&port=" + Bukkit.getPort() + "&ver=" + getVersion() + "&plugins=" + getPlugins())).openStream());
 					} else {
-						ipChecker = new Scanner((new URL("http://plugins.mrpowergamerbr.com/updater?plugin=" + PowerSuperAntiProxy.pluginName + "&port=" + Bukkit.getPort())).openStream());
+						ipChecker = new Scanner((new URL("http://mrpowergamerbr.com/plugins/updater?plugin=" + PowerSuperAntiProxy.pluginName + "&port=" + Bukkit.getPort())).openStream());
 					}
 					Bukkit.getLogger().log(Level.INFO, "[" + PowerSuperAntiProxy.pluginName + "] Verificando atualizações...");
 
