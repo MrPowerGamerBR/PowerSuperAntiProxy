@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="C:/Users/Leonardo/Documents/UnrealBiroscaProject/TacoSpigot/TacoSpigot-Server/target/server-1.8.8-R0.2-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Leonardo/Documents/Minecraft Servers/1.8.8/plugins/ProtocolLib.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Leonardo/Documents/lombok/lombok.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Leonardo/Documents/Minecraft Servers/BungeeCord/plugins/BungeeUtil-1.6.9.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Leonardo/Documents/Minecraft Servers/BungeeCord/BungeeCord.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

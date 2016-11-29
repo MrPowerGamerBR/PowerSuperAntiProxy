@@ -12,8 +12,7 @@ UsarProtocolLib: true
 BloquearIPsDoDeathBot: true
 UsarASkidban: true
 SitesBuscados:
-    # PowerHateList (Créditos: MrPowerGamerBR (mrpowergamerbr.com), nathampa0909 (jairocraft.com.br))
-    - "http://plugins.mrpowergamerbr.com/files/hate.txt"
+    - "http://lori.mrpowergamerbr.com/search.txt"
 BloquearHostnamesFeios: true
 HostnamesBloqueados:
     # HotspotShield
@@ -30,12 +29,5 @@ HostnamesBloqueados:
     - "exitpoint"
 BloquearIPsDaOVH: true
 UsarStopForumSpam: true
-
-#
-# Temmie Updater - Verificador de Atualizações
-#
-# Criado por MrPowerGamerBR
-#
-TemmieUpdater:
-    VerificarUpdates: true
-    TemmieMetrics: true
+# Coloque -1 caso você queria desativar isso
+BloquearContasPorIP: 3
