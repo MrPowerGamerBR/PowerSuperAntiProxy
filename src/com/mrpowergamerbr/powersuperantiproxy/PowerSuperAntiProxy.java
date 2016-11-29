@@ -48,6 +48,6 @@ public class PowerSuperAntiProxy extends JavaPlugin implements Listener {
 
 class ProtoLibGambiarra {
     public static void register(PowerSuperAntiProxy m) {
-        ProtocolLibrary.getProtocolManager().addPacketListener(new ProtocolBlocker(m, new PacketType[] { PacketType.Handshake.Client.SET_PROTOCOL, PacketType.Login.Client.START }));
+        ProtocolLibrary.getProtocolManager().addPacketListener(new ProtocolBlocker(m, new PacketType[] { PacketType.Handshake.Client.SET_PROTOCOL }));
     }
 }

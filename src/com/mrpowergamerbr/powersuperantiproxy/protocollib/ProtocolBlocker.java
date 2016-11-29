@@ -10,6 +10,7 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import com.mrpowergamerbr.powersuperantiproxy.PowerSuperAntiProxy;
+import com.mrpowergamerbr.powersuperantiproxy.utils.RetroUtils;
 
 public class ProtocolBlocker extends PacketAdapter {
     PowerSuperAntiProxy m;
@@ -37,7 +38,7 @@ public class ProtocolBlocker extends PacketAdapter {
             
             int current = 0;
             
-            for (Player p : Bukkit.getOnlinePlayers()) {
+            for (Player p : RetroUtils.getOnlinePlayers()) {
                 if (inet.getHostAddress().equals(p.getAddress().getAddress().getHostAddress())) {
                     current++;
                 }
