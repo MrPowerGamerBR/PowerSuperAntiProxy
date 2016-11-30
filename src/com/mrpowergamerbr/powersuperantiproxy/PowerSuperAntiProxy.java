@@ -5,6 +5,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
+import com.mrpowergamerbr.powersuperantiproxy.listeners.AsyncJoinListener;
 import com.mrpowergamerbr.powersuperantiproxy.protocollib.ProtocolBlocker;
 import com.mrpowergamerbr.powersuperantiproxy.utils.ReloadCommand;
 
@@ -25,6 +26,8 @@ public class PowerSuperAntiProxy extends JavaPlugin implements Listener {
         saveDefaultConfig();
         cnf = new EntaoBabyEsperaUmPouco();
         cnf.init();
+        
+        new AsyncJoinListener(this);
         
         Bukkit.getPluginManager().registerEvents(this, this);
 
