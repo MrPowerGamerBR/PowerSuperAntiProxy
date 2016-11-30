@@ -216,7 +216,7 @@ public class EntaoBabyEsperaUmPouco {
             public void run() {
                 try
                 {
-                    File dataFolder = data;
+                    File dataFolder = PowerSuperAntiProxy.getInstance().getDataFolder();
                     if(!dataFolder.exists())
                     {
                         dataFolder.mkdir();
