@@ -20,17 +20,16 @@ import lombok.*;
 @Getter
 @Setter
 public class EntaoBabyEsperaUmPouco {
-    public static final String QuatroM_NoToque = "https://youtu.be/Kv2TnMowhh8";
 
-    HashSet<String> safeIPs = new HashSet<String>();
-    HashSet<String> proxyIPs = new HashSet<String>();
+    HashSet<String> safeIPs = new HashSet<>();
+    HashSet<String> proxyIPs = new HashSet<>();
 
-    String proxyUse = "§cUso de Proxy!\n\n§cDesative o Proxy antes de conectar!";
+    String proxyUse = "Â§cUso de Proxy!\n\nÂ§cDesative o Proxy antes de conectar!";
 
-    HashSet<String> deathBotIPs = new HashSet<String>();
-    HashSet<String> powerHateListIPs = new HashSet<String>();
+    HashSet<String> deathBotIPs = new HashSet<>();
+    HashSet<String> powerHateListIPs = new HashSet<>();
 
-    HashSet<String> cidr = new HashSet<String>();
+    HashSet<String> cidr = new HashSet<>();
 
     File data;
     
@@ -42,7 +41,7 @@ public class EntaoBabyEsperaUmPouco {
         cidr.clear();
 
 
-        proxyUse = PowerSuperAntiProxy.getInstance().getConfig().getString("MensagemDeKick").replace("&", "§");
+        proxyUse = PowerSuperAntiProxy.getInstance().getConfig().getString("MensagemDeKick").replace("&", "Â§");
 
         /*
          * IPs em formato CIDR do ASkidban
@@ -287,7 +286,7 @@ public class EntaoBabyEsperaUmPouco {
             }
             if (line.startsWith("#")) {
                 if (!title) {
-                    Bukkit.getLogger().log(Level.INFO, "Descrição do " + url);
+                    Bukkit.getLogger().log(Level.INFO, "DescriÃ§Ã£o do " + url);
                     title = true;
                 }
                 Bukkit.getLogger().log(Level.INFO, line.replace("# ", ""));
