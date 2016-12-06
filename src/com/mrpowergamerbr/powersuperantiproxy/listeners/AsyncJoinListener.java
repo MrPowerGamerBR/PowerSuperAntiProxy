@@ -17,6 +17,7 @@ import com.mrpowergamerbr.powersuperantiproxy.SubnetUtils;
 import com.mrpowergamerbr.powersuperantiproxy.utils.RetroUtils;
 
 public class AsyncJoinListener implements Listener {
+
     PowerSuperAntiProxy m;
 
     public AsyncJoinListener(PowerSuperAntiProxy m) {
@@ -45,7 +46,7 @@ public class AsyncJoinListener implements Listener {
 
             for (Player p : RetroUtils.getOnlinePlayers()) {
                 if (inet.getHostAddress().equals(p.getAddress().getAddress().getHostAddress())) {
-                    current++;
+                    current += 1;
                 }
             }
 
