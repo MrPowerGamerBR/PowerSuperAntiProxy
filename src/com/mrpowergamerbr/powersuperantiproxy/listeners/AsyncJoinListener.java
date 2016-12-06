@@ -29,30 +29,32 @@ public class AsyncJoinListener implements Listener {
     public void onJoin(final AsyncPlayerPreLoginEvent apple) {
         final InetAddress inet = apple.getAddress();
 
-        if (m.getCnf().getSafeIPs().contains(inet.getHostAddress())) {
-            return;
-        }
-
-        if (m.getCnf().getProxyIPs().contains(inet.getHostAddress())) {
-            apple.disallow(Result.KICK_OTHER, m.getCnf().getProxyUse());
-            m.getCnf().logToFile("[" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR) + " " + Calendar.getInstance().get(Calendar.HOUR) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + "] " + apple.getAddress().getHostName() + "///" + apple.getAddress().getHostAddress() + " (" + apple.getName() + ") " + ": Proxy do DeathBot!");
-            return;
-        }
-
-        if (m.getConfig().getInt("BloquearContasPorIP") != -1) {
-            int max = m.getConfig().getInt("BloquearContasPorIP");
-
-            int current = 0;
-
-            for (Player p : RetroUtils.getOnlinePlayers()) {
-                if (inet.getHostAddress().equals(p.getAddress().getAddress().getHostAddress())) {
-                    current += 1;
-                }
+        if (!m.getConfig().getBoolean("UsarProtocolLib")) {
+            if (m.getCnf().getSafeIPs().contains(inet.getHostAddress())) {
+                return;
             }
 
-            if (current > max) {
+            if (m.getCnf().getProxyIPs().contains(inet.getHostAddress())) {
                 apple.disallow(Result.KICK_OTHER, m.getCnf().getProxyUse());
+                m.getCnf().logToFile("[" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR) + " " + Calendar.getInstance().get(Calendar.HOUR) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + "] " + apple.getAddress().getHostName() + "///" + apple.getAddress().getHostAddress() + " (" + apple.getName() + ") " + ": Proxy do DeathBot!");
                 return;
+            }
+
+            if (m.getConfig().getInt("BloquearContasPorIP") != -1) {
+                int max = m.getConfig().getInt("BloquearContasPorIP");
+
+                int current = 0;
+
+                for (Player p : RetroUtils.getOnlinePlayers()) {
+                    if (inet.getHostAddress().equals(p.getAddress().getAddress().getHostAddress())) {
+                        current += 1;
+                    }
+                }
+
+                if (current > max) {
+                    apple.disallow(Result.KICK_OTHER, m.getCnf().getProxyUse());
+                    return;
+                }
             }
         }
 
