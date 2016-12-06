@@ -80,7 +80,7 @@ public class EntaoBabyEsperaUmPouco {
             /*
              * DeathBot antigo
              */
- /*
+            /*
              * HTTP Proxy
              */
             try {
@@ -128,7 +128,7 @@ public class EntaoBabyEsperaUmPouco {
             /*
              * DeathBot novo
              */
- /*
+            /*
              * SOCKS4 Proxy
              */
             try {
@@ -260,7 +260,7 @@ public class EntaoBabyEsperaUmPouco {
             }
             if (line.startsWith("#")) {
                 if (!title) {
-                    Bukkit.getLogger().log(Level.INFO, "Descri\u00e7\u00e3o do {0}", url);
+                    Bukkit.getLogger().log(Level.INFO, "Descrição do {0}", url);
                     title = true;
                 }
                 Bukkit.getLogger().log(Level.INFO, line.replace("# ", ""));
@@ -280,6 +280,6 @@ public class EntaoBabyEsperaUmPouco {
         // System.out.println("HATE. " + powerHateListIPs.toString());
         ipChecker.close();
 
-        Bukkit.getLogger().log(Level.INFO, "[PowerSuperAntiProxy] IPs carregados do site {0} - {1}", new Object[]{url, ipsLoaded});
+        Bukkit.getLogger().log(Level.INFO, "[PowerSuperAntiProxy] IPs carregados do site {0} - {1}", new Object[] { url, ipsLoaded } );
     }
 }
