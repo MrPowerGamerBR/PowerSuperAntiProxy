@@ -19,12 +19,13 @@ import lombok.*;
 
 @Getter
 @Setter
+// https://youtu.be/Kv2TnMowhh8
 public class EntaoBabyEsperaUmPouco {
 
     HashSet<String> safeIPs = new HashSet<>();
     HashSet<String> proxyIPs = new HashSet<>();
 
-    String proxyUse = "Â§cUso de Proxy!\n\nÂ§cDesative o Proxy antes de conectar!";
+    String proxyUse = "§cUso de Proxy!\n\n§cDesative o Proxy antes de conectar!";
 
     HashSet<String> deathBotIPs = new HashSet<>();
     HashSet<String> powerHateListIPs = new HashSet<>();
@@ -277,7 +278,6 @@ public class EntaoBabyEsperaUmPouco {
                 ipsLoaded++;
             }
         }
-        // System.out.println("HATE. " + powerHateListIPs.toString());
         ipChecker.close();
 
         Bukkit.getLogger().log(Level.INFO, "[PowerSuperAntiProxy] IPs carregados do site {0} - {1}", new Object[] { url, ipsLoaded } );
