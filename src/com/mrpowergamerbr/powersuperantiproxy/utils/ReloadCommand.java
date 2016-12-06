@@ -17,12 +17,12 @@ public class ReloadCommand extends AbstractCommand {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (sender.hasPermission("SparklySuperAntiProxy.ReloadConfig")) {
             m.getCnf().init();
-            sender.sendMessage("§aConfig recarregada!");
+            sender.sendMessage("Â§aConfig recarregada!");
             return true;
         }
-        sender.sendMessage("§6§lPowerSuperAntiProxy §8- §7Criado por §b§lMrPowerGamerBR");
-        sender.sendMessage("§bMrPowerGamerBR Website:§3 http://mrpowergamerbr.com");
-        sender.sendMessage("§4§lSparkly§b§lPower http://sparklypower.net");
+        sender.sendMessage("Â§6Â§lPowerSuperAntiProxy Â§8- Â§7Criado por Â§bÂ§lMrPowerGamerBR");
+        sender.sendMessage("Â§bMrPowerGamerBR Website:Â§3 http://mrpowergamerbr.com");
+        sender.sendMessage("Â§4Â§lSparklyÂ§bÂ§lPower http://sparklypower.net");
         return true;
     }
 
