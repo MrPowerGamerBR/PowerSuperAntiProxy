@@ -3,7 +3,6 @@ package com.mrpowergamerbr.powersuperantiproxy.protocollib;
 import java.net.InetAddress;
 import java.util.Calendar;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.comphenix.protocol.PacketType;
@@ -13,8 +12,9 @@ import com.mrpowergamerbr.powersuperantiproxy.PowerSuperAntiProxy;
 import com.mrpowergamerbr.powersuperantiproxy.utils.RetroUtils;
 
 public class ProtocolBlocker extends PacketAdapter {
+
     PowerSuperAntiProxy m;
-    
+
     public ProtocolBlocker(PowerSuperAntiProxy plugin, PacketType[] types) {
         super(plugin, types);
         this.m = plugin;
@@ -35,21 +35,21 @@ public class ProtocolBlocker extends PacketAdapter {
 
         if (m.getConfig().getInt("BloquearContasPorIP") != -1) {
             int max = m.getConfig().getInt("BloquearContasPorIP");
-            
+
             int current = 0;
-            
+
             for (Player p : RetroUtils.getOnlinePlayers()) {
                 if (inet.getHostAddress().equals(p.getAddress().getAddress().getHostAddress())) {
-                    current++;
+                    current += 1;
                 }
             }
-            
+
             if (current > max) {
                 event.setCancelled(true);
                 return;
             }
         }
-        
+
         if (m.getCnf().getDeathBotIPs().contains(inet.getHostAddress())) {
             event.setCancelled(true);
 
@@ -59,5 +59,5 @@ public class ProtocolBlocker extends PacketAdapter {
             return;
         }
     }
-    
+
 }
