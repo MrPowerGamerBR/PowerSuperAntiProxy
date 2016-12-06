@@ -14,21 +14,21 @@ import lombok.*;
 @Getter
 @Setter
 public class PowerSuperAntiProxy extends JavaPlugin implements Listener {
-    public static final String pluginName = "PowerSuperAntiProxy";
+
     EntaoBabyEsperaUmPouco cnf;
-    
+
     public static PowerSuperAntiProxy getInstance() {
         return (PowerSuperAntiProxy) Bukkit.getPluginManager().getPlugin("PowerSuperAntiProxy");
     }
-    
+
     @Override
     public void onEnable() {
         saveDefaultConfig();
         cnf = new EntaoBabyEsperaUmPouco();
         cnf.init();
-        
+
         new AsyncJoinListener(this);
-        
+
         Bukkit.getPluginManager().registerEvents(this, this);
 
         if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
@@ -36,7 +36,7 @@ public class PowerSuperAntiProxy extends JavaPlugin implements Listener {
                 ProtoLibGambiarra.register(this);
             }
         }
-        
+
         new ReloadCommand("powersuperantiproxy", this).register();
     }
 
@@ -50,7 +50,8 @@ public class PowerSuperAntiProxy extends JavaPlugin implements Listener {
 }
 
 class ProtoLibGambiarra {
+
     public static void register(PowerSuperAntiProxy m) {
-        ProtocolLibrary.getProtocolManager().addPacketListener(new ProtocolBlocker(m, new PacketType[] { PacketType.Handshake.Client.SET_PROTOCOL }));
+        ProtocolLibrary.getProtocolManager().addPacketListener(new ProtocolBlocker(m, new PacketType[]{PacketType.Handshake.Client.SET_PROTOCOL}));
     }
 }
