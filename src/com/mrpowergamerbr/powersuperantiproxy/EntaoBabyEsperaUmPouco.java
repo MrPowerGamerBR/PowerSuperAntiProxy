@@ -32,7 +32,7 @@ public class EntaoBabyEsperaUmPouco {
     HashSet<String> cidr = new HashSet<>();
 
     File data;
-    
+
     public void init() {
         safeIPs.clear();
         proxyIPs.clear();
@@ -40,14 +40,15 @@ public class EntaoBabyEsperaUmPouco {
         powerHateListIPs.clear();
         cidr.clear();
 
-
         proxyUse = PowerSuperAntiProxy.getInstance().getConfig().getString("MensagemDeKick").replace("&", "§");
-
+        
+        data = PowerSuperAntiProxy.getInstance().getDataFolder();
+        
         /*
          * IPs em formato CIDR do ASkidban
          */
         if (PowerSuperAntiProxy.getInstance().getConfig().getBoolean("UsarASkidban")) {
-            System.out.println("[" + "PowerSuperAntiProxy" + "] Pegando os IPs CIDR...");
+            System.out.println("[PowerSuperAntiProxy] Pegando os IPs CIDR...");
 
             try {
                 Scanner ipChecker = new Scanner((new URL("https://raw.githubusercontent.com/pisto/ASkidban/master/compiled/ipv4")).openStream());
@@ -55,16 +56,13 @@ public class EntaoBabyEsperaUmPouco {
                     String line = ipChecker.nextLine();
                     cidr.add(line);
                 }
-                System.out.println("[" + "PowerSuperAntiProxy" + "] IPs em formato CIDR foram pegos! Yay!");
+                System.out.println("[PowerSuperAntiProxy] IPs em formato CIDR foram pegos! Yay!");
                 ipChecker.close();
             } catch (IOException e) {
-                // TODO Auto-generated catch block
+                System.out.println("[PowerSuperAntiProxy] Um erro ocorreu ao tentar pegar os IPs em formado CIDR!");
                 e.printStackTrace();
-                System.out.println("[" + "PowerSuperAntiProxy" + "] Um erro ocorreu ao tentar pegar os IPs em formado CIDR!");
-                return;
             }
         }
-
 
         Scanner ipChecker;
 
@@ -74,8 +72,7 @@ public class EntaoBabyEsperaUmPouco {
             try {
                 pastebinSearch(web, powerHateListIPs);
             } catch (Exception e) {
-                // Bukkit.getLogger().log(Level.INFO, "[" + "PowerSuperAntiProxy" + "] Um problema ocorreu ao tentar carregar os IPs do site: " + web);
-                continue;
+                Bukkit.getLogger().log(Level.WARNING, "[PowerSuperAntiProxy] Um problema ocorreu ao tentar carregar os IPs do site: {0}", web);
             }
         }
 
@@ -161,10 +158,10 @@ public class EntaoBabyEsperaUmPouco {
                 e.printStackTrace();
             }
 
-            File blockThis = new File(PowerSuperAntiProxy.getInstance().getDataFolder(), "blockthis.txt");
+            File blockThis = new File(data, "blockthis.txt");
             if (blockThis.exists()) {
-                try(BufferedReader br = new BufferedReader(new FileReader(blockThis))) {
-                    for(String line; (line = br.readLine()) != null; ) {
+                try (BufferedReader br = new BufferedReader(new FileReader(blockThis))) {
+                    for (String line; (line = br.readLine()) != null;) {
                         proxyIPs.add(line);
                     }
                 } catch (IOException e) {
@@ -173,7 +170,6 @@ public class EntaoBabyEsperaUmPouco {
             }
         }
     }
-    
 
     public boolean searchAndDestroy(String web, String ip, String search) {
         if (ip.equals("127.0.0.1")) {
@@ -194,7 +190,7 @@ public class EntaoBabyEsperaUmPouco {
         try {
             for (ProxyChecker = new Scanner((new URL(web)).openStream());
                     ProxyChecker
-                    .hasNextLine(); res = res + ProxyChecker.nextLine()) {;
+                            .hasNextLine(); res = res + ProxyChecker.nextLine()) {;
             }
             ProxyChecker.close();
             if (res.contains(search)) {
@@ -208,21 +204,16 @@ public class EntaoBabyEsperaUmPouco {
         }
     }
 
-    public void logToFile(final String message)
-    {
+    public void logToFile(final String message) {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                try
-                {
-                    File dataFolder = PowerSuperAntiProxy.getInstance().getDataFolder();
-                    if(!dataFolder.exists())
-                    {
-                        dataFolder.mkdir();
+                try {
+                    if (!data.exists()) {
+                        data.mkdir();
                     }
                     File saveTo = new File(data, "markedproxies.log");
-                    if (!saveTo.exists())
-                    {
+                    if (!saveTo.exists()) {
                         saveTo.createNewFile();
                     }
                     FileWriter fw = new FileWriter(saveTo, true);
@@ -230,8 +221,8 @@ public class EntaoBabyEsperaUmPouco {
                     pw.println(message);
                     pw.flush();
                     pw.close();
-                } catch (IOException e)
-                {
+                    fw.close();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -239,21 +230,16 @@ public class EntaoBabyEsperaUmPouco {
         t.start();
     }
 
-    public void writeIPs(final String message)
-    {
+    public void writeIPs(final String message) {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                try
-                {
-                    File dataFolder = data;
-                    if(!dataFolder.exists())
-                    {
-                        dataFolder.mkdir();
+                try {
+                    if (!data.exists()) {
+                        data.mkdir();
                     }
                     File saveTo = new File(data, "blockthis.txt");
-                    if (!saveTo.exists())
-                    {
+                    if (!saveTo.exists()) {
                         saveTo.createNewFile();
                     }
                     FileWriter fw = new FileWriter(saveTo, true);
@@ -261,8 +247,8 @@ public class EntaoBabyEsperaUmPouco {
                     pw.println(message);
                     pw.flush();
                     pw.close();
-                } catch (IOException e)
-                {
+                    fw.close();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -286,13 +272,12 @@ public class EntaoBabyEsperaUmPouco {
             }
             if (line.startsWith("#")) {
                 if (!title) {
-                    Bukkit.getLogger().log(Level.INFO, "Descrição do " + url);
+                    Bukkit.getLogger().log(Level.INFO, "Descri\u00e7\u00e3o do {0}", url);
                     title = true;
                 }
                 Bukkit.getLogger().log(Level.INFO, line.replace("# ", ""));
-                continue;
             }
-            if (line.contains(":")) {
+            else if (line.contains(":")) {
                 String[] split = line.split("\\:");
                 try {
                     hash.add(split[0]);
@@ -308,6 +293,6 @@ public class EntaoBabyEsperaUmPouco {
         // System.out.println("HATE. " + powerHateListIPs.toString());
         ipChecker.close();
 
-        Bukkit.getLogger().log(Level.INFO, "[" + "PowerSuperAntiProxy" + "] IPs carregados do site " + url + " - " + ipsLoaded);
+        Bukkit.getLogger().log(Level.INFO, "[PowerSuperAntiProxy] IPs carregados do site {0} - {1}", new Object[]{url, ipsLoaded});
     }
 }
