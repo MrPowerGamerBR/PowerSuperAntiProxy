@@ -34,7 +34,7 @@ public class AsyncJoinListener implements Listener {
 
         if (m.getCnf().getProxyIPs().contains(inet.getHostAddress())) {
             apple.disallow(Result.KICK_OTHER, m.getCnf().getProxyUse());
-            // logToFile("[" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR) + " " + Calendar.getInstance().get(Calendar.HOUR) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + "] " + apple.getAddress().getHostName() + "///" + apple.getAddress().getHostAddress() + " (" + apple.getName() + ") " + ": Proxy do DeathBot!");
+            m.getCnf().logToFile("[" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR) + " " + Calendar.getInstance().get(Calendar.HOUR) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + "] " + apple.getAddress().getHostName() + "///" + apple.getAddress().getHostAddress() + " (" + apple.getName() + ") " + ": Proxy do DeathBot!");
             return;
         }
 
@@ -95,7 +95,7 @@ public class AsyncJoinListener implements Listener {
             for (String hostname : hostnames) {
                 if (inet.getHostName().toLowerCase().contains("hostname")) {
                     apple.disallow(Result.KICK_OTHER, m.getCnf().getProxyUse());
-                    m.getCnf().logToFile("[" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR) + " " + Calendar.getInstance().get(Calendar.HOUR) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + "] " + apple.getAddress().getHostName() + "///" + apple.getAddress().getHostAddress() + " (" + apple.getName() + ") " + ": IP contém " + hostname + "!");
+                    m.getCnf().logToFile("[" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR) + " " + Calendar.getInstance().get(Calendar.HOUR) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + "] " + apple.getAddress().getHostName() + "///" + apple.getAddress().getHostAddress() + " (" + apple.getName() + ") " + ": IP contÃ©m " + hostname + "!");
                     m.getCnf().getProxyIPs().add(inet.getHostAddress());
                     return;
                 }
