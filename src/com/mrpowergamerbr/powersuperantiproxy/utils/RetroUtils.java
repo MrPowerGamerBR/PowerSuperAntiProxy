@@ -5,36 +5,36 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 public class RetroUtils {
-	public static Method getOP;
 
-	static {
-		try {
-			getOP = Bukkit.getServer().getClass().getMethod("getOnlinePlayers");
-		} catch (NoSuchMethodException | SecurityException e) {
-			// Qual versão você está usando?
-			e.printStackTrace();
-		}
-	}
+    public static Method getOP;
 
-	public static Collection<? extends Player> getOnlinePlayers() {
-		try {
-			Object object = getOP.invoke(Bukkit.getServer());
+    static {
+        try {
+            getOP = Bukkit.getServer().getClass().getMethod("getOnlinePlayers");
+        } catch (NoSuchMethodException | SecurityException e) {
+            // Qual versÃ£o vocÃª estÃ¡ usando?
+            e.printStackTrace();
+        }
+    }
 
-			if (object instanceof Collection) {
-				return (Collection<? extends Player>) object;
-			} else {
-				// Ah não... isto é um Player[]! Maldita *insira versão antes da 1.7.9-R0.3-SNAPSHOT!*
-				Player[] oldList = (Player[]) object;
+    public static Collection<? extends Player> getOnlinePlayers() {
+        try {
+            Object object = getOP.invoke(Bukkit.getServer());
 
-				return Arrays.asList(oldList); 
-			}
-		} catch (Exception e) {
-			// Oh no! Deu problema! Vamos usar o Bukkit.getOnlinePlayers() e torcer para que dê certo...
-			return Bukkit.getOnlinePlayers();
-		}
-	}
+            if (object instanceof Collection) {
+                return (Collection<? extends Player>) object;
+            } else {
+                // Ah nÃ£o... isto Ã© um Player[]! Maldita *insira versÃ£o antes da 1.7.9-R0.3-SNAPSHOT!*
+                Player[] oldList = (Player[]) object;
+
+                return Arrays.asList(oldList);
+            }
+        } catch (Exception e) {
+            // Oh no! Deu problema! Vamos usar o Bukkit.getOnlinePlayers() e torcer para que dÃª certo...
+            return Bukkit.getOnlinePlayers();
+        }
+    }
 }
