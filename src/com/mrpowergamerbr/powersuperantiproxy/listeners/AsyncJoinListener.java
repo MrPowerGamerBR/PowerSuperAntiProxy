@@ -26,7 +26,7 @@ public class AsyncJoinListener implements Listener {
         this.m = m;
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onJoin(final AsyncPlayerPreLoginEvent apple) {
         final InetAddress inet = apple.getAddress();
 
