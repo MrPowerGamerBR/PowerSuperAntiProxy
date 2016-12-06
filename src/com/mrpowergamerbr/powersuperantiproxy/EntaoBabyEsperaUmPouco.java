@@ -41,9 +41,9 @@ public class EntaoBabyEsperaUmPouco {
         cidr.clear();
 
         proxyUse = PowerSuperAntiProxy.getInstance().getConfig().getString("MensagemDeKick").replace("&", "§");
-        
+
         data = PowerSuperAntiProxy.getInstance().getDataFolder();
-        
+
         /*
          * IPs em formato CIDR do ASkidban
          */
@@ -80,7 +80,7 @@ public class EntaoBabyEsperaUmPouco {
             /*
              * DeathBot antigo
              */
-            /*
+ /*
              * HTTP Proxy
              */
             try {
@@ -128,7 +128,7 @@ public class EntaoBabyEsperaUmPouco {
             /*
              * DeathBot novo
              */
-            /*
+ /*
              * SOCKS4 Proxy
              */
             try {
@@ -172,36 +172,24 @@ public class EntaoBabyEsperaUmPouco {
     }
 
     public boolean searchAndDestroy(String web, String ip, String search) {
-        if (ip.equals("127.0.0.1")) {
+        if (ip.equals("127.0.0.1") || ip.startsWith("192.168")) {
             return false;
         }
-        if (ip.startsWith("192.168")) {
-            return false;
-        }
-        if (proxyIPs.contains(ip)) {
-            return true;
-        }
-        if (safeIPs.contains(ip)) {
-            return false;
-        }
-        String res = "";
+        StringBuilder res = new StringBuilder();
 
         Scanner ProxyChecker;
         try {
-            for (ProxyChecker = new Scanner((new URL(web)).openStream());
-                    ProxyChecker
-                            .hasNextLine(); res = res + ProxyChecker.nextLine()) {;
+            for (ProxyChecker = new Scanner((new URL(web)).openStream()); ProxyChecker.hasNextLine(); res.append(ProxyChecker.nextLine())) {
             }
             ProxyChecker.close();
-            if (res.contains(search)) {
+            if (res.toString().contains(search)) {
                 proxyIPs.add(ip);
+                return true;
             }
-            return res.contains(search) ? Boolean.valueOf(true) : Boolean
-                    .valueOf(false);
         } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+            e.printStackTrace();    
         }
+        return false;
     }
 
     public void logToFile(final String message) {
@@ -276,8 +264,7 @@ public class EntaoBabyEsperaUmPouco {
                     title = true;
                 }
                 Bukkit.getLogger().log(Level.INFO, line.replace("# ", ""));
-            }
-            else if (line.contains(":")) {
+            } else if (line.contains(":")) {
                 String[] split = line.split("\\:");
                 try {
                     hash.add(split[0]);
